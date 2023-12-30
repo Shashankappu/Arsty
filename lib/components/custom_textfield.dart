@@ -7,17 +7,16 @@ class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
     required this.hintText,
-    required this.obscureText
+    required this.obscureText,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
       padding:  const EdgeInsets.symmetric(horizontal: 30.0,vertical: 5.0),
       child: TextField(
         obscureText: obscureText,
-        style:const   TextStyle(color: Colors.black,fontSize: 16,),
+        style: const TextStyle(color: Colors.black,fontSize: 16,),
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
