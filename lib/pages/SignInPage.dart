@@ -20,10 +20,13 @@ class _SignInPageState extends State<SignInPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        centerTitle: true,
+        elevation: 0.0,
+        backgroundColor: Colors.white,
         title: const Center(
           child:  Text(
-            "Welcome back",
-            style: TextStyle(color: Colors.black, fontSize: 20),
+            "Welcome back,\tSign In",
+            style: TextStyle(color: Colors.black, fontSize: 24),
           ),
         ),
       ),
@@ -31,13 +34,11 @@ class _SignInPageState extends State<SignInPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const Padding(
-                padding:  EdgeInsets.only(top:15.0),
-                child:  Text(
-                  "Sign In",
-                  style: TextStyle(color: Colors.black, fontSize: 28),
-                ),
+              SizedBox(
+                height: 100,
+                  child: Lottie.asset('assets/splash/world.json')
               ),
+
               // Radio buttons for Guide and Traveller
               Padding(
                 padding: const EdgeInsets.only(top: 15.0),
@@ -72,9 +73,9 @@ class _SignInPageState extends State<SignInPage> {
               ),
               // Additional UI elements for Guide
               if (isGuideSelected)
-                const CustomTextField(hintText: "Enter guide id",obscureText: false,),
-              const CustomTextField(hintText: "Enter your username",obscureText: false,),
-              const CustomTextField(hintText: 'Enter your password',obscureText: true),
+                const CustomTextField(hintText: "Guide id",obscureText: false,),
+              const CustomTextField(hintText: "Username",obscureText: false,),
+              const CustomTextField(hintText: 'Password',obscureText: true),
               const SizedBox(height: 20,),
         
               CustomButton(

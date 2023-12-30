@@ -1,7 +1,9 @@
+import 'package:artsy/pages/AddStoriesPage.dart';
 import 'package:artsy/pages/HomePage.dart';
 import 'package:artsy/pages/ListenPage.dart';
 import 'package:artsy/pages/SignInPage.dart';
 import 'package:artsy/pages/SignUpPage.dart';
+import 'package:artsy/pages/StoriesPage.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -20,8 +22,11 @@ class MyApp extends StatelessWidget {
       routes: {
         '/signIn': (context) => const SignInPage(),
         '/signUp': (context) => const SignUpPage(),
-        '/home': (context) => const HomePage(),  // Remove const
-        '/listen': (context) => const ListenPage(),  // Remove const
+        '/home': (context) => const HomePage(),
+        '/listen': (context) => const ListenPage(),
+        '/stories':(context) => const StoriesPage(),
+        '/addstories':(context) => const AddStoriesPage(),
+
       },
       theme: ThemeData(
         primarySwatch: Colors.grey,
@@ -45,7 +50,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void _navigateToHome() async {
-    await Future.delayed(const Duration(seconds: 2), () {});
+    await Future.delayed(const Duration(seconds: 3), () {});
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignInPage()));
   }
 
@@ -61,8 +66,10 @@ class _SplashPageState extends State<SplashPage> {
               padding: EdgeInsets.only(top: 40.0),
               child:  Text("Smartsonic",style: TextStyle(color: Colors.black,fontSize: 28),),
             ),
-            Container (
-                child: Lottie.asset('assets/splash.json'),
+            SizedBox (
+              height: 300,
+                width: 300,
+                child: Lottie.asset('assets/splash/splas.json'),
             ),
             const Padding(
               padding: EdgeInsets.only(bottom: 30.0),

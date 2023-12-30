@@ -80,8 +80,8 @@ class _HomePageState extends State<HomePage>
             const SizedBox(height: 100),
             Center(
               child: (result != null)
-                  ? const Text('Click on Continue')
-                  : const Text('Scan a code'),
+                  ? const Text('Click on Continue',)
+                  : const Text('Scan QR'),
             ),
             const SizedBox(height: 100),
             CustomButton(onTap: _navigateToListenPage, btnText: "Continue")

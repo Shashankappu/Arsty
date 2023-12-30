@@ -68,11 +68,11 @@ class _SignUpPageState extends State<SignUpPage> {
 
               // Additional UI elements for Guide
               if (isGuideSelected)
-                const CustomTextField(hintText: "Enter guide id", obscureText: false),
-              const CustomTextField(hintText: "Enter username", obscureText: false),
-              const CustomTextField(hintText: "Enter email id", obscureText: false),
-              const CustomTextField(hintText: "Enter your password", obscureText: true),
-              const CustomTextField(hintText: "Confirm your password", obscureText: true),
+                const CustomTextField(hintText: "Guide id", obscureText: false),
+              const CustomTextField(hintText: "Username", obscureText: false),
+              const CustomTextField(hintText: "Email", obscureText: false),
+              const CustomTextField(hintText: "Password", obscureText: true),
+              const CustomTextField(hintText: "Confirm password", obscureText: true),
               const SizedBox(height: 25,),
                CustomButton(
                   onTap: (){

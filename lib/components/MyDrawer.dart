@@ -35,10 +35,12 @@ class MyDrawer extends StatelessWidget {
             ),
             ListTile(
               onTap: (){
-                Navigator.pushReplacementNamed(context,"/home");
+                Navigator.pop(context);
+                Navigator.pushNamed(context,"/stories");
               },
-              leading: const Icon(CupertinoIcons.settings, color: Colors.black,),
-              title: const Text("Settings", style: TextStyle(color: Colors.black),),
+              leading: const Icon(CupertinoIcons.bubble_left_bubble_right, color: Colors.black,),
+              title: const Text("Stories", style: TextStyle(color: Colors.black),),
+
             ),
             ListTile(
               onTap: (){
