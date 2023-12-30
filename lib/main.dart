@@ -23,6 +23,9 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomePage(),  // Remove const
         '/listen': (context) => const ListenPage(),  // Remove const
       },
+      theme: ThemeData(
+        primarySwatch: Colors.grey,
+      ),
     );
   }
 }

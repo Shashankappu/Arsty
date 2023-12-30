@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'ListenPage.dart';
 
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -77,7 +78,13 @@ class _HomePageState extends State<HomePage>
               ],
             ),
             const SizedBox(height: 100),
-            CustomButton(onTap: _navigateToListenPage, btnText: "Scan")
+            Center(
+              child: (result != null)
+                  ? const Text('Click on Continue')
+                  : const Text('Scan a code'),
+            ),
+            const SizedBox(height: 100),
+            CustomButton(onTap: _navigateToListenPage, btnText: "Continue")
           ],
         ),
       ),
