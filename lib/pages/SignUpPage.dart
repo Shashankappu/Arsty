@@ -1,6 +1,7 @@
 import 'package:artsy/components/custom_button.dart';
 import 'package:artsy/components/custom_textfield.dart';
 import 'package:artsy/pages/HomePage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'SignInPage.dart';
@@ -14,6 +15,20 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   bool isGuideSelected = false;
+  final _guideIdController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _cnfpasswordController = TextEditingController();
+
+
+  Future signUp() async{
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim()
+    );
+    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const HomePage()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,15 +83,19 @@ class _SignUpPageState extends State<SignUpPage> {
 
               // Additional UI elements for Guide
               if (isGuideSelected)
-                const CustomTextField(hintText: "Guide id", obscureText: false),
-              const CustomTextField(hintText: "Username", obscureText: false),
-              const CustomTextField(hintText: "Email", obscureText: false),
-              const CustomTextField(hintText: "Password", obscureText: true),
-              const CustomTextField(hintText: "Confirm password", obscureText: true),
+                 CustomTextField(hintText: "Guide id", obscureText: false,controller: _guideIdController,),
+               CustomTextField(hintText: "Username", obscureText: false,controller: _usernameController,),
+               CustomTextField(hintText: "Email", obscureText: false,controller: _emailController,),
+               CustomTextField(hintText: "Password", obscureText: true,controller: _passwordController,),
+               CustomTextField(hintText: "Confirm password", obscureText: true,controller: _cnfpasswordController,),
               const SizedBox(height: 25,),
                CustomButton(
                   onTap: (){
-                Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const HomePage()));
+                    if(_validator()){
+                        signUp();
+                    }else{
+                      debugPrint('LOG: SIGN UP FAILED');
+                    }
                 },
                   btnText: 'Sign Up'),
               const SizedBox(height: 100,),
@@ -96,5 +115,14 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
     );
+  }
+
+  bool _validator(){
+    if(_usernameController.text.isNotEmpty && _passwordController.text.isNotEmpty){
+      if(_passwordController.text.length>6 && (_passwordController.text != _cnfpasswordController.text)){
+        return true;
+      }
+    }
+    return false;
   }
 }

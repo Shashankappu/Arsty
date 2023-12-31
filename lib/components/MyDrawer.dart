@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -51,6 +53,7 @@ class MyDrawer extends StatelessWidget {
             ),
             ListTile(
                onTap: (){
+                 FirebaseAuth.instance.signOut();
                  Navigator.pushReplacementNamed(context,'/signIn');
              },
               leading: const Icon(Icons.logout, color: Colors.black,),

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "760083746870",
+    "firebase_url": "https://socialt-52da8-default-rtdb.firebaseio.com",
+    "project_id": "socialt-52da8",
+    "storage_bucket": "socialt-52da8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760083746870:android:576ca18fedc562b3b4c897",
+        "android_client_info": {
+          "package_name": "com.shashanksp.artsy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "760083746870-hmbinvloofjr9f5sc5epfpdrhp7n5a8e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApiIJ99_CaiNEX1X_RQhFAPjHztFJW_OE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "760083746870-hmbinvloofjr9f5sc5epfpdrhp7n5a8e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

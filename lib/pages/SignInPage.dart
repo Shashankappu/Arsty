@@ -2,6 +2,7 @@ import 'package:artsy/components/custom_button.dart';
 import 'package:artsy/components/custom_textfield.dart';
 import 'package:artsy/pages/HomePage.dart';
 import 'package:artsy/pages/SignUpPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -14,7 +15,18 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   bool isGuideSelected = false;
+  final _guideIdController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
+  Future signIn() async{
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim()
+    );
+    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const HomePage()));
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,14 +85,18 @@ class _SignInPageState extends State<SignInPage> {
               ),
               // Additional UI elements for Guide
               if (isGuideSelected)
-                const CustomTextField(hintText: "Guide id",obscureText: false,),
-              const CustomTextField(hintText: "Username",obscureText: false,),
-              const CustomTextField(hintText: 'Password',obscureText: true),
-              const SizedBox(height: 20,),
+                CustomTextField(hintText: "Guide id",obscureText: false,controller: _guideIdController,),
+               CustomTextField(hintText: "Email",obscureText: false,controller: _emailController,),
+               CustomTextField(hintText: 'Password',obscureText: true,controller: _passwordController,),
+               const SizedBox(height: 20,),
         
               CustomButton(
                   onTap: (){
-                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const HomePage()));
+                    if(_emailController.text.isNotEmpty && _passwordController.text.length >6 ){
+                      signIn();
+                    }else{
+                      debugPrint('LOG: Email is empty or password length less than 6');
+                    }
                   },
                   btnText: 'Sign In'
               ),
