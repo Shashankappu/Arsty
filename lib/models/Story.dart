@@ -1,10 +1,9 @@
-import 'dart:core';
-
 class Story{
-  String name;
-  String artName;
+  String? username;
+  String placename;
   String storyContent;
 
-  Story({required this.name, required this.artName, required this.storyContent});
+  Story({String? username, required this.placename, required this.storyContent})
+      : username = username ?? "anonymous";
 
 }

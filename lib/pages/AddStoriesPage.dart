@@ -1,9 +1,21 @@
 import 'package:artsy/components/custom_button.dart';
+import 'package:artsy/models/UserModel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class AddStoriesPage extends StatelessWidget {
+import '../models/Story.dart';
+
+class AddStoriesPage extends StatefulWidget {
   const AddStoriesPage({super.key});
 
+  @override
+  State<AddStoriesPage> createState() => _AddStoriesPageState();
+
+}
+
+class _AddStoriesPageState extends State<AddStoriesPage> {
+  final _storyContentController = TextEditingController();
+  final _placenameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,14 +48,15 @@ class AddStoriesPage extends StatelessWidget {
               ),
               child:  Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 2.0),
-                child: const TextField(
+                child:  TextField(
+                  controller: _placenameController,
                   autofocus: true,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       hintText: 'Enter place name',
                       hintStyle: TextStyle(color: Colors.grey,fontSize: 18),
                       border: InputBorder.none
                   ),
-                  style: TextStyle(fontSize: 18, color: Colors.black),
+                  style: const TextStyle(fontSize: 18, color: Colors.black),
                 ),
               ),
             ),
@@ -58,25 +71,35 @@ class AddStoriesPage extends StatelessWidget {
               // Set the background color if needed
               child:  Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 2.0),
-                child: const TextField(
+                child:  TextField(
+                  controller: _storyContentController,
                   autofocus: true,
                   maxLength: 700,
                   maxLines: null,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       hintText: 'Type your story here..',
                       hintStyle: TextStyle(color: Colors.grey,fontSize: 18),
                       border: InputBorder.none
                   ),
-                  style: TextStyle(fontSize: 18, color: Colors.black),
+                  style: const TextStyle(fontSize: 18, color: Colors.black),
                 ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 10.0,top: 20),
-                child: CustomButton(onTap: (){}, btnText: "Add story")
+                child: CustomButton(onTap:() async {
+                  String? username = UserModel.currentUsername;
+                  Story story = Story(username: username, placename: _placenameController.text.trim(),storyContent: _storyContentController.text.trim());
+                  await FirebaseFirestore.instance.collection('Stories').add({
+                    'username': story.username,
+                    'placename': story.placename,
+                    'storyContent': story.storyContent,
+                    'timestamp': FieldValue.serverTimestamp(),
+                  });
+                  Navigator.pushReplacementNamed(context, '/stories');
+                }, btnText: "Add story")
             ),
           ],
-
         ),
       ),
     );
