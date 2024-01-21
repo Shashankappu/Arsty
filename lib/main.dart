@@ -79,7 +79,7 @@ class _SplashPageState extends State<SplashPage> {
           children:[
             const Padding(
               padding: EdgeInsets.only(top: 40.0),
-              child:  Text("Smartsonic",style: TextStyle(color: Colors.black,fontSize: 28),),
+              child:  Text("artsy",style: TextStyle(color: Colors.black,fontSize: 28),),
             ),
             SizedBox (
               height: 300,

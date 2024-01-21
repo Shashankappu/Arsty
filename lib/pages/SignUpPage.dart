@@ -1,9 +1,11 @@
 import 'package:artsy/components/custom_button.dart';
 import 'package:artsy/components/custom_textfield.dart';
 import 'package:artsy/pages/HomePage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../models/UserModel.dart';
 import 'SignInPage.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -23,11 +25,30 @@ class _SignUpPageState extends State<SignUpPage> {
 
 
   Future signUp() async{
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim()
-    );
-    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const HomePage()));
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim());
+
+      // Set the username as the display name
+      await userCredential.user!.updateDisplayName(_usernameController.text.trim());
+
+      // Store user details in Firestore
+      await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
+        'isGuide': isGuideSelected,
+        'email': userCredential.user!.email,
+        'username': _usernameController.text.trim(),
+        'guideId': isGuideSelected ? _guideIdController.text.trim() : null,
+      });
+
+      // Now you can use the 'user' object as needed.
+
+      Navigator.pushReplacementNamed(context, '/home');
+    } catch (e) {
+      // Handle sign-up errors here
+      debugPrint("Error during sign-up: $e");
+    }
   }
 
   @override
@@ -119,7 +140,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   bool _validator(){
     if(_usernameController.text.isNotEmpty && _passwordController.text.isNotEmpty){
-      if(_passwordController.text.length>6 && (_passwordController.text != _cnfpasswordController.text)){
+      if(_passwordController.text.length>6 && (_passwordController.text == _cnfpasswordController.text)){
         return true;
       }
     }

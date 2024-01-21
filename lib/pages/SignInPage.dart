@@ -1,10 +1,12 @@
 import 'package:artsy/components/custom_button.dart';
 import 'package:artsy/components/custom_textfield.dart';
-import 'package:artsy/pages/HomePage.dart';
 import 'package:artsy/pages/SignUpPage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+
+import '../models/UserModel.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -20,12 +22,37 @@ class _SignInPageState extends State<SignInPage> {
   final _passwordController = TextEditingController();
 
   Future signIn() async{
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim()
-    );
-    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const HomePage()));
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim());
 
+      // Fetch user details from Firestore if available
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .get();
+
+      // Check if the user document exists
+      if (userSnapshot.exists) {
+        // Document exists, retrieve user details
+        UserModel user = UserModel(
+          isGuide: userSnapshot['isGuide'],
+          email: userSnapshot['email'],
+          username: userSnapshot['username'],
+          guideId: userSnapshot['guideId'],
+        );
+
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        // User document does not exist, handle accordingly
+        debugPrint("User details not found in Firestore.");
+      }
+    } catch (e) {
+      // Handle sign-in errors here
+      debugPrint("Error during sign-in: $e");
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -83,16 +110,18 @@ class _SignInPageState extends State<SignInPage> {
                   ],
                 ),
               ),
+
               // Additional UI elements for Guide
               if (isGuideSelected)
                 CustomTextField(hintText: "Guide id",obscureText: false,controller: _guideIdController,),
-               CustomTextField(hintText: "Email",obscureText: false,controller: _emailController,),
-               CustomTextField(hintText: 'Password',obscureText: true,controller: _passwordController,),
-               const SizedBox(height: 20,),
+
+              CustomTextField(hintText: "Email",obscureText: false,controller: _emailController,),
+              CustomTextField(hintText: 'Password',obscureText: true,controller: _passwordController,),
+              const SizedBox(height: 20,),
         
               CustomButton(
                   onTap: (){
-                    if(_emailController.text.isNotEmpty && _passwordController.text.length >6 ){
+                    if(_emailController.text.isNotEmpty && _passwordController.text.length > 6 ){
                       signIn();
                     }else{
                       debugPrint('LOG: Email is empty or password length less than 6');
